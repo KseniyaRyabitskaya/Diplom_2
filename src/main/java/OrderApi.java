@@ -12,7 +12,7 @@ public class OrderApi {
                 .and()
                 .body(order)
                 .when()
-                .post("/api/orders");
+                .post(Endpoints.ORDERS_ENDPOINT);
     }
 
     @Step("Send POST request to /api/orders")
@@ -22,7 +22,7 @@ public class OrderApi {
                 .and()
                 .body(order)
                 .when()
-                .post("/api/orders");
+                .post(Endpoints.ORDERS_ENDPOINT);
     }
 
     @Step("Send GET request to /api/orders")
@@ -31,7 +31,7 @@ public class OrderApi {
                 .spec(RestAssuredUtils.getRequestSpecification())
                 .header("Authorization", token)
                 .when()
-                .get("/api/orders");
+                .get(Endpoints.ORDERS_ENDPOINT);
     }
 
     @Step("Send GET request to /api/orders")
@@ -39,6 +39,6 @@ public class OrderApi {
         return given()
                 .spec(RestAssuredUtils.getRequestSpecification())
                 .when()
-                .get("/api/orders");
+                .get(Endpoints.ORDERS_ENDPOINT);
     }
 }

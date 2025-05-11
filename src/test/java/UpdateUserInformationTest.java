@@ -1,3 +1,4 @@
+import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,11 +9,13 @@ public class UpdateUserInformationTest {
 
     User firstUser;
     User secondUser;
+    Faker faker;
 
     @Before
     public void setUp() {
-        firstUser = new User("alexxxbublikovvv@mail.ru", "Hfggg65JJhg", "Alex");
-        secondUser = new User("borisivanovvv67@yandex.ru", "hdfjvHH34yyyGG", "Boris");
+        faker = new Faker();
+        firstUser = new User(faker.internet().emailAddress(), faker.internet().password(6, 20), faker.name().firstName());
+        secondUser = new User(faker.internet().emailAddress(), faker.internet().password(6, 20), faker.name().firstName());
         UserApi.createUser(firstUser);
         UserApi.createUser(secondUser);
     }
@@ -25,7 +28,7 @@ public class UpdateUserInformationTest {
                 .body()
                 .path("accessToken");
 
-        firstUser.setEmail("alexxxbublikovvvff@mail.ru");
+        firstUser.setEmail(faker.internet().emailAddress());
 
         UserApi.changeUserInformationWithAuthorization(accessTokenFirstUser, firstUser)
                 .then()
@@ -43,7 +46,7 @@ public class UpdateUserInformationTest {
                 .body()
                 .path("accessToken");
 
-        firstUser.setName("Alexxx67");
+        firstUser.setName(faker.name().firstName());
 
         UserApi.changeUserInformationWithAuthorization(accessTokenFirstUser, firstUser)
                 .then()
@@ -61,8 +64,8 @@ public class UpdateUserInformationTest {
                 .body()
                 .path("accessToken");
 
-        firstUser.setEmail("alexxxbublikovvvff@mail.ru");
-        firstUser.setName("Alexxx67");
+        firstUser.setEmail(faker.internet().emailAddress());
+        firstUser.setName(faker.name().firstName());
 
         UserApi.changeUserInformationWithAuthorization(accessTokenFirstUser, firstUser)
                 .then()
@@ -101,7 +104,7 @@ public class UpdateUserInformationTest {
     public void changeEmailForUnauthorisedUserTest() {
         UserApi.changeUserInformationWithoutAuthorization(
                         new User(
-                                "alexxxbublikovvvff@mail.ru",
+                                faker.internet().emailAddress(),
                                 firstUser.getPassword(),
                                 firstUser.getName()
                         )
@@ -119,7 +122,7 @@ public class UpdateUserInformationTest {
                         new User(
                                 firstUser.getEmail(),
                                 firstUser.getPassword(),
-                                "Alexxx67"
+                                faker.name().firstName()
                         )
                 )
                 .then()
@@ -133,9 +136,9 @@ public class UpdateUserInformationTest {
     public void changeEmailAndNameForUnauthorisedUserTest() {
         UserApi.changeUserInformationWithoutAuthorization(
                         new User(
-                                "alexxxbublikovvvff@mail.ru",
+                                faker.internet().emailAddress(),
                                 firstUser.getPassword(),
-                                "Alexxx67"
+                                faker.name().firstName()
                         )
                 )
                 .then()

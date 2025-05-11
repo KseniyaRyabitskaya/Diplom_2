@@ -1,3 +1,4 @@
+import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -6,10 +7,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 
 public class LoginUserTest {
     User user;
+    Faker faker;
 
     @Before
     public void createUser() {
-        user = new User("alexxxbublikovvv@mail.ru", "Hfggg65JJhg", "Alex");
+        faker = new Faker();
+        user = new User(faker.internet().emailAddress(), faker.internet().password(6, 20), faker.name().firstName());
         UserApi.createUser(user);
     }
 
@@ -25,7 +28,7 @@ public class LoginUserTest {
 
     @Test
     public void loginWithIncorrectEmailTest() {
-        UserApi.loginUser(new User("alexbublikov@mail.ru", user.getPassword(), ""))
+        UserApi.loginUser(new User(faker.internet().emailAddress(), user.getPassword(), ""))
                 .then()
                 .assertThat()
                 .statusCode(401)
@@ -35,7 +38,7 @@ public class LoginUserTest {
 
     @Test
     public void loginWithIncorrectPasswordTest() {
-        UserApi.loginUser(new User(user.getEmail(), "Hfggg65J", ""))
+        UserApi.loginUser(new User(user.getEmail(), faker.internet().password(6, 20), ""))
                 .then()
                 .assertThat()
                 .statusCode(401)

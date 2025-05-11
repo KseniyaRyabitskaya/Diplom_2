@@ -1,3 +1,4 @@
+import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +11,8 @@ public class GetOrdersCertainUserTest {
 
     @Before
     public void createUser() {
-        user = new User("alexxxbublikovvv@mail.ru", "Hfggg65JJhg", "Alex");
+        Faker faker = new Faker();
+        user = new User(faker.internet().emailAddress(), faker.internet().password(6, 20), faker.name().firstName());
         UserApi.createUser(user);
     }
 
